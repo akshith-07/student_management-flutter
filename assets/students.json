@@ -1,0 +1,38 @@
+[
+    {
+        "regno": 1,
+        "name": "Akshith",
+        "department": "CSE",
+        "skills": "Flutter Developer"
+    },
+    {
+        "regno": 2,
+        "name": "Jobirin",
+        "department": "AIDS",
+        "skills": "MERN Stack Developer"
+    },
+    {
+        "regno": 3,
+        "name": "Scrapz",
+        "department": "AIML",
+        "skills": "Data Scientist"
+    },
+    {
+        "regno": 4,
+        "name": "Kousik",
+        "department": "AIML",
+        "skills": "Data Scientist"
+    },
+    {
+        "regno": 5,
+        "name": "Sanjay",
+        "department": "AIML",
+        "skills": "Data Scientist"
+    },
+    {
+        "regno": 6,
+        "name": "Babin",
+        "department": "CSE",
+        "skills": "MERN Stack Developer"
+    }
+]
