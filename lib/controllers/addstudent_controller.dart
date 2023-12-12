@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -35,6 +34,7 @@ class AddStudentController extends GetxController {
       // Check the response status code
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
+        Get.off(NavigationPage(), arguments: 0);
 
         // Assuming the server returns the added student details directly
         var regNo = json['regno'];
@@ -63,8 +63,16 @@ class AddStudentController extends GetxController {
         departmentController.clear();
         skillsController.clear();
 
-        // Navigate to the home screen
-        Get.off(()=>NavigationPage(), arguments: 0);
+        // Show a success message using GetX Snackbar with improved UI
+        Get.snackbar(
+          'Success',
+          '$name is added successfully',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.teal,
+          colorText: Colors.white,
+          borderRadius: 10,
+          margin: EdgeInsets.all(16),
+        );
       } else {
         // Handle unexpected errors
         throw jsonDecode(response.body)["Message"] ?? "Unknown Error Occurred";

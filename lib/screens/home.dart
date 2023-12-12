@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loginregister_authentication/screens/hostel_dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:loginregister_authentication/services/student_details.dart';
 import 'dart:convert';
@@ -8,6 +9,7 @@ import 'auth/auth_screen.dart';
 import 'package:loginregister_authentication/screens/mydrawer_header.dart';
 import 'package:loginregister_authentication/screens/add_student.dart';
 import 'package:http/http.dart' as http;
+import 'package:loginregister_authentication/screens/field_learn.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  TextEditingController searchController = TextEditingController();
 
   static Future<List<StudentDetails>> ReadJsonData() async {
     var url = Uri.parse('http://localhost:3500/api/v1/students');
@@ -32,6 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
           (e) => StudentDetails.fromJson(e),
         )
         .toList();
+  }
+
+  List<StudentDetails> filterStudents(
+      String query, List<StudentDetails> students) {
+    return students.where((student) {
+      final nameLower = student.name!.toLowerCase();
+      final queryLower = query.toLowerCase();
+      return nameLower.contains(queryLower);
+    }).toList();
   }
 
   @override
@@ -53,19 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.school),
             iconSize: 30,
             onPressed: () async {
-              Get.to(AddStudent());
+              Get.to(FieldLearn());
             },
           ),
           SizedBox(
             width: 10,
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: Icon(Icons.dashboard),
             iconSize: 20,
-            onPressed: () async {},
+            onPressed: () async {
+              Get.to(HostelDashboard());
+            },
           ),
         ],
       ),
@@ -80,58 +94,98 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else if (data.hasData) {
-            var items = data.data as List<StudentDetails>;
-            return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return Padding(
+            var allStudents = data.data as List<StudentDetails>;
+            var filteredStudents =
+                filterStudents(searchController.text, allStudents);
+
+            return Column(
+              children: [
+                Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    elevation: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          color: const Color.fromARGB(255, 76, 194, 166),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserDetailsScreen(
-                                    studentDetails: items[index],
+                  child: TextField(
+                    controller: searchController,
+                    style: TextStyle(fontSize: 16.0),
+                    decoration: InputDecoration(
+                      labelText: 'Search by Name',
+                      labelStyle: TextStyle(fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14.0),
+                      ),
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          searchController.clear();
+                        },
+                      ),
+                    ),
+                    onChanged: (query) {
+                      setState(() {
+                        filteredStudents = filterStudents(query, allStudents);
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 0,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filteredStudents.length,
+                    itemBuilder: (context, index) {
+                      var student = filteredStudents[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Card(
+                          elevation: 10,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                color: const Color.fromARGB(255, 76, 194, 166),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserDetailsScreen(
+                                          studentDetails: student,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  leading: Text(
+                                    "Reg No : ${student.regno.toString()}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    "Department : ${student.department.toString()}",
+                                    style: TextStyle(fontSize: 16),
                                   ),
                                 ),
-                              );
-                            },
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            leading: Text(
-                              "Reg No : ${items[index].regno.toString()}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                            trailing: Text(
-                              "Department : ${items[index].department.toString()}",
-                              style: TextStyle(fontSize: 16),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  "Name : ${student.name.toString()}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            "Name : ${items[index].name.toString()}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             );
           } else {
             return Center(
@@ -147,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 MyDrawerHeader(),
                 SizedBox(
-                  height: 400,
+                  height: 380,
                 ),
                 TextButton.icon(
                     onPressed: () async {
@@ -162,7 +216,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      
     );
   }
 }

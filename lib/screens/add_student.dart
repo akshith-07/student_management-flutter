@@ -28,20 +28,23 @@ class _AddStudentState extends State<AddStudent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 80),
+            SizedBox(height: 30),
             InputTextFieldWidget(
-                addStudentController.regnoController, 'Reg No'),
-            SizedBox(height: 20),
-            InputTextFieldWidget(addStudentController.nameController, 'Name'),
+                textEditingController: addStudentController.regnoController,
+                hintText: 'Reg No'),
             SizedBox(height: 20),
             InputTextFieldWidget(
-              addStudentController.departmentController,
-              'Department',
+                textEditingController: addStudentController.nameController,
+                hintText: 'Name'),
+            SizedBox(height: 20),
+            InputTextFieldWidget(
+              textEditingController: addStudentController.departmentController,
+              hintText: 'Department',
             ),
             SizedBox(height: 20),
             InputTextFieldWidget(
-              addStudentController.skillsController,
-              'Skills',
+              textEditingController: addStudentController.skillsController,
+              hintText: 'Skills',
             ),
             SizedBox(height: 40),
             SubmitButton(

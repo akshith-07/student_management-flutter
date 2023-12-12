@@ -26,7 +26,7 @@ class SubmitButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide.none)),
               backgroundColor: MaterialStateProperty.all<Color>(
-                Colors.green,
+                Colors.teal,
               )),
           onPressed: onPressed,
           child: Text(title,

@@ -112,7 +112,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:loginregister_authentication/screens/home.dart';
 import 'package:loginregister_authentication/screens/navigation_bar.dart';
 // import 'package:loginregister_authentication/services/student_details.dart';
 

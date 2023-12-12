@@ -49,6 +49,7 @@ class LoginController extends GetxController {
         throw jsonDecode(response.body)["Message"] ?? "Unknown Error Occured";
       }
     } catch (error) {
+      print(error);
       Get.back();
       showDialog(
           context: Get.context!,

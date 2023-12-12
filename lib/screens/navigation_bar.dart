@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loginregister_authentication/screens/add_student.dart';
 import 'package:loginregister_authentication/screens/home.dart';
+import 'package:loginregister_authentication/screens/datatable_view.dart';
+import 'package:loginregister_authentication/screens/chart_screen.dart';
 import 'package:get/get.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -16,7 +18,8 @@ class _NavigationPageState extends State<NavigationPage> {
   List<Widget> pageList = [
     const HomeScreen(),
     const AddStudent(),
-    const Placeholder(),
+    DataTableView(), // Use the DataTableView here
+    ChartScreen(), // Add the ChartScreen here
   ];
 
   void _onItemTapped(int index) {
@@ -34,6 +37,11 @@ class _NavigationPageState extends State<NavigationPage> {
 
     // Set the initial index
     _selectedIndex = initialIndex;
+
+    // Call fetchData when the widget is initialized
+    // if (_selectedIndex == 2) {
+    //   (pageList[2] as DataTableView).fetchData();
+    // }
   }
 
   @override
@@ -42,7 +50,7 @@ class _NavigationPageState extends State<NavigationPage> {
       body: pageList.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.teal,
-        selectedItemColor: Colors.white,
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.grey[400],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -56,8 +64,12 @@ class _NavigationPageState extends State<NavigationPage> {
             label: 'Add Student',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.view_agenda),
+            label: 'View',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Chart', // Label for the new Chart item
           ),
         ],
       ),

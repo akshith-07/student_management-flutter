@@ -1,4 +1,4 @@
-# loginregister_authentication
+# Student Management Application
 
 A new Flutter project.
 

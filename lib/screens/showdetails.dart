@@ -53,24 +53,29 @@ class UserDetailsScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton.icon(
-                        onPressed: () {
-                          Get.to(EditStudent(
-                            studentDetails: studentDetails,
-                          ));
-                        },
-                        icon: Icon(Icons.edit),
-                        label: Text("Edit")),
+                      onPressed: () {
+                        Get.to(EditStudent(
+                          studentDetails: studentDetails,
+                        ));
+                      },
+                      icon: Icon(Icons.edit),
+                      label: Text("Edit"),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                    ),
                     SizedBox(
                       width: 15.0,
                     ),
                     ElevatedButton.icon(
-                      onPressed: () {
-                        DeleteStudent(studentDetails: studentDetails)
-                            .showDeleteConfirmationDialog(context);
-                      },
-                      icon: Icon(Icons.delete),
-                      label: Text("Delete"),
-                    ),
+                        onPressed: () {
+                          DeleteStudent(studentDetails: studentDetails)
+                              .showDeleteConfirmationDialog(context);
+                        },
+                        icon: Icon(Icons.delete),
+                        label: Text("Delete"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        )),
                   ],
                 ),
               )
