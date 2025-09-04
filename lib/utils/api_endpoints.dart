@@ -7,3 +7,4 @@ class _AuthEndPoints {
   final String registerEmail = 'authaccount/registration';
   final String loginEmail = 'authaccount/login';
 }
+
