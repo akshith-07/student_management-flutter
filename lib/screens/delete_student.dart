@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 // import 'package:loginregister_authentication/screens/home.dart';
 import 'package:loginregister_authentication/services/student_details.dart';
 
-class DeleteStudent {
+class DeleteStudent { 
   final StudentDetails studentDetails;
 
   DeleteStudentController deleteStudentController =
